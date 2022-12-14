@@ -1,4 +1,7 @@
 @extends('admin.layouts.template')
+@section('pagetitle')
+  All Category
+@endsection
 @section('content')
 <div class="row">
     <div class="col-12">

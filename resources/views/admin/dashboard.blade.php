@@ -1,4 +1,7 @@
 @extends('admin.layouts.template')
+@section('pagetitle')
+  Dashboard
+@endsection
 @section('content')
     <section class="section">
       <div class="row ">
