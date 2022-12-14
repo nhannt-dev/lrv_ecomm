@@ -9,7 +9,17 @@
             <div class="card-header">
                 <h4>Create Category</h4>
             </div>
-            <form action="" method="POST">
+            @if ($errors->any())
+              <div class="alert alert-danger">
+                <ul>
+                @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+                @endforeach
+                </ul>
+              </div>
+            @endif
+            <form action="{{ route('admin.storecategory') }}" method="POST">
+              @csrf
                 <div class="card-body">
                   <div class="form-group">
                     <label for="category_name">Category Name</label>
@@ -17,7 +27,7 @@
                   </div>
                 </div>
                 <div class="card-footer">
-                  <button class="btn btn-primary">Create Category</button>
+                  <button type="submit" class="btn btn-primary">Create Category</button>
                 </div>
             </form>
           </div>
