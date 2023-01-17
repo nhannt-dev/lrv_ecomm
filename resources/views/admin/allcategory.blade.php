@@ -36,7 +36,10 @@
                         <div class="badge badge-danger">Not Active</div>
                       @endif
                     </td>
-                    <td><a href="#" class="btn btn-primary">Detail</a></td>
+                    <td>
+                      <a href="{{ route('admin.editcategory', $category->id) }}" class="btn btn-primary">Edit</a>
+                      <a href="{{ route('admin.deletecategory', $category->id) }}" class="btn btn-danger">Delete</a>
+                    </td>
                   </tr>
                   @endforeach
 

@@ -32,13 +32,41 @@ class DashboardController extends Controller
             'slug' => strtolower(str_replace(' ','-',$request->category_name))
         ]);
 
-        return redirect()->route('admin.allcategory')->with('message','Them category thanh cong!');
+        return redirect()->route('admin.allcategory')->with('message','Thêm danh mục sản phẩm thành công!');
     }
 
     public function AllCategory()
     {
         $categories = Category::latest()->get();
         return view('admin.allcategory', compact('categories'));
+    }
+
+    public function EditCategory($id)
+    {
+        $category_info = Category::findOrFail($id);
+        return view('admin.editcategory', compact('category_info'));
+    }
+
+    public function UpdateCategory(Request $request)
+    {
+        $request->validate([
+            'category_name' => 'required|unique:categories',
+        ]);
+
+        $id = $request->category_id;
+
+        Category::findOrFail($id)->update([
+            'category_name' => $request->category_name,
+            'slug' => strtolower(str_replace(' ','-',$request->category_name))
+        ]);
+
+        return redirect()->route('admin.allcategory')->with('message','Cập nhật danh mục sản phẩm thành công!');
+    }
+
+    public function DeleteCategory($id)
+    {
+        Category::findOrFail($id)->delete();
+        return redirect()->route('admin.allcategory')->with('message','Xoá danh mục sản phẩm thành công!');
     }
 
     public function CreateSubCategory()
