@@ -39,6 +39,19 @@
                     <td>
                       <a href="{{ route('admin.editcategory', $category->id) }}" class="btn btn-primary">Edit</a>
                       <a href="{{ route('admin.deletecategory', $category->id) }}" class="btn btn-danger">Delete</a>
+                      @if ($category->status === 'active')
+                        <form action="{{ route('admin.deactivatecategory') }}" method="post">
+                          @csrf
+                          <input type="hidden" value="{{ $category->id }}" name="cat_id">
+                          <input type="submit" value="Deactivate" class="btn btn-danger mt-2">
+                        </form>
+                      @else
+                        <form action="{{ route('admin.activatecategory') }}" method="post">
+                          @csrf
+                          <input type="hidden" value="{{ $category->id }}" name="cat_id">
+                          <input type="submit" value="Activate" class="btn btn-primary mt-2">
+                        </form>
+                      @endif
                     </td>
                   </tr>
                   @endforeach

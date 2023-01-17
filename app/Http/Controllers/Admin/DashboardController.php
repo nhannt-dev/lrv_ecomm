@@ -55,7 +55,7 @@ class DashboardController extends Controller
 
         $id = $request->category_id;
 
-        Category::findOrFail($id)->update([
+        Category::where('id', $id)->update([
             'category_name' => $request->category_name,
             'slug' => strtolower(str_replace(' ','-',$request->category_name))
         ]);
@@ -67,6 +67,26 @@ class DashboardController extends Controller
     {
         Category::findOrFail($id)->delete();
         return redirect()->route('admin.allcategory')->with('message','Xoá danh mục sản phẩm thành công!');
+    }
+
+    public function ActivateCategory(Request $request)
+    {
+        $id = $request->cat_id;
+        Category::where('id', $id)->update([
+            'status' => 'active'
+        ]);
+        
+        return redirect()->route('admin.allcategory')->with('message','Đã cập nhật trạng thái danh mục!');
+    }
+    
+    public function DeactivateCategory(Request $request)
+    {
+        $id = $request->cat_id;
+        Category::where('id', $id)->update([
+            'status' => 'not active'
+        ]);
+
+        return redirect()->route('admin.allcategory')->with('message','Đã cập nhật trạng thái danh mục!');
     }
 
     public function CreateSubCategory()
