@@ -37,7 +37,7 @@
                       @endif
                     </td>
                     <td>
-                      <a href="{{ route('admin.editcategory', $category->id) }}" class="btn btn-primary">Edit</a>
+                      <a href="{{ route('admin.editcategory', $category->id) }}" class="btn btn-warning">Edit</a>
                       <a href="{{ route('admin.deletecategory', $category->id) }}" class="btn btn-danger">Delete</a>
                       @if ($category->status === 'active')
                         <form action="{{ route('admin.deactivatecategory') }}" method="post">

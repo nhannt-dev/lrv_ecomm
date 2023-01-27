@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -94,9 +95,29 @@ class DashboardController extends Controller
         return view('admin.createsubcategory');
     }
 
+    public function StoreSubCategory(Request $request)
+    {
+        $request->validate([
+            'subcategory_name' => 'required|unique:sub_categories',
+        ]);
+
+        $category_name = Category::where('id', $request->category_id)->value('category_name');
+
+        SubCategory::insert([
+            'subcategory_name' => $request->subcategory_name,
+            'slug' => strtolower(str_replace(' ','-',$request->subcategory_name)),
+            'product_count' => 0,
+            'category_id' => $request->category_id,
+            'category_name' => $category_name
+        ]);
+
+        return redirect()->route('admin.allsubcategory')->with('message','Thêm danh mục con thành công!');
+    }
+
     public function AllSubCategory()
     {
-        return view('admin.allsubcategory');
+        $subcategories = SubCategory::latest()->get();
+        return view('admin.allsubcategory', compact('subcategories'));
     }
 
     public function CreateBrands()
