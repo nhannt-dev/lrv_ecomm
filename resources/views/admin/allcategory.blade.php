@@ -43,13 +43,13 @@
                         <form action="{{ route('admin.deactivatecategory') }}" method="post">
                           @csrf
                           <input type="hidden" value="{{ $category->id }}" name="cat_id">
-                          <input type="submit" value="Deactivate" class="btn btn-danger mt-2">
+                          <input type="submit" value="Deactivate" class="btn btn-info mt-2">
                         </form>
                       @else
                         <form action="{{ route('admin.activatecategory') }}" method="post">
                           @csrf
                           <input type="hidden" value="{{ $category->id }}" name="cat_id">
-                          <input type="submit" value="Activate" class="btn btn-primary mt-2">
+                          <input type="submit" value="Activate" class="btn btn-success mt-2">
                         </form>
                       @endif
                     </td>

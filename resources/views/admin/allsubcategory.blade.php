@@ -45,8 +45,21 @@
                           @endif
                         </td>
                         <td>
-                          <a href="#" class="btn btn-warning">Edit</a>
-                          <a href="#" class="btn btn-danger">Delete</a>
+                          <a href="{{ route('admin.editsubcategory', $subcategory->id) }}" class="btn btn-warning">Edit</a>
+                          <a href="{{ route('admin.deletesubcategory', $subcategory->id) }}" class="btn btn-danger">Delete</a>
+                          @if ($subcategory->status === 'active')
+                            <form action="{{ route('admin.deactivatesubcategory') }}" method="post">
+                              @csrf
+                              <input type="hidden" value="{{ $subcategory->id }}" name="subcat_id">
+                              <input type="submit" value="Deactivate" class="btn btn-info mt-2">
+                            </form>
+                          @else
+                            <form action="{{ route('admin.activatesubcategory') }}" method="post">
+                              @csrf
+                              <input type="hidden" value="{{ $subcategory->id }}" name="subcat_id">
+                              <input type="submit" value="Activate" class="btn btn-success mt-2">
+                            </form>
+                          @endif
                         </td>
                       </tr>  
                     @endforeach

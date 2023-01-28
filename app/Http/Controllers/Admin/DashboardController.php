@@ -16,7 +16,13 @@ class DashboardController extends Controller
     public function ContactMessage() {
         return view('admin.messages');
     }
-
+    
+    public function AllCategory()
+    {
+        $categories = Category::latest()->get();
+        return view('admin.allcategory', compact('categories'));
+    }
+    
     public function CreateCategory()
     {
         return view('admin.createcategory');
@@ -34,12 +40,6 @@ class DashboardController extends Controller
         ]);
 
         return redirect()->route('admin.allcategory')->with('message','Thêm danh mục sản phẩm thành công!');
-    }
-
-    public function AllCategory()
-    {
-        $categories = Category::latest()->get();
-        return view('admin.allcategory', compact('categories'));
     }
 
     public function EditCategory($id)
@@ -69,7 +69,7 @@ class DashboardController extends Controller
         Category::findOrFail($id)->delete();
         return redirect()->route('admin.allcategory')->with('message','Xoá danh mục sản phẩm thành công!');
     }
-
+    
     public function ActivateCategory(Request $request)
     {
         $id = $request->cat_id;
@@ -86,15 +86,21 @@ class DashboardController extends Controller
         Category::where('id', $id)->update([
             'status' => 'not active'
         ]);
-
+        
         return redirect()->route('admin.allcategory')->with('message','Đã cập nhật trạng thái danh mục!');
     }
-
+    
+    public function AllSubCategory()
+    {
+        $subcategories = SubCategory::latest()->get();
+        return view('admin.allsubcategory', compact('subcategories'));
+    }
+    
     public function CreateSubCategory()
     {
         return view('admin.createsubcategory');
     }
-
+    
     public function StoreSubCategory(Request $request)
     {
         $request->validate([
@@ -102,7 +108,7 @@ class DashboardController extends Controller
         ]);
 
         $category_name = Category::where('id', $request->category_id)->value('category_name');
-
+        
         SubCategory::insert([
             'subcategory_name' => $request->subcategory_name,
             'slug' => strtolower(str_replace(' ','-',$request->subcategory_name)),
@@ -110,21 +116,62 @@ class DashboardController extends Controller
             'category_id' => $request->category_id,
             'category_name' => $category_name
         ]);
-
+        
         return redirect()->route('admin.allsubcategory')->with('message','Thêm danh mục con thành công!');
     }
 
-    public function AllSubCategory()
+    public function EditSubCategory($id)
     {
-        $subcategories = SubCategory::latest()->get();
-        return view('admin.allsubcategory', compact('subcategories'));
+        $subcategory = SubCategory::findOrFail($id);
+        return view('admin.editsubcategory', compact('subcategory'));
+    }
+    
+    public function UpdateSubCategory(Request $request)
+    {
+        $category_name = Category::where('id', $request->category_id)->value('category_name');
+        $subcat_id = $request->subcategory_id;
+        
+        SubCategory::where('id', $subcat_id)->update([
+            'subcategory_name' => $request->subcategory_name,
+            'slug' => strtolower(str_replace(' ','-',$request->subcategory_name)),
+            'category_id' => $request->category_id,
+            'category_name' => $category_name
+        ]);
+        
+        return redirect()->route('admin.allsubcategory')->with('message','Cập nhật danh mục con thành công!');
     }
 
+    public function DeleteSubCategory($id)
+    {
+        SubCategory::findOrFail($id)->delete();
+        return redirect()->route('admin.allsubcategory')->with('message','Xoá danh mục con thành công!');
+    }
+    
+    public function ActivateSubCategory(Request $request)
+    {
+        $id = $request->subcat_id;
+        SubCategory::where('id', $id)->update([
+            'status' => 'active'
+        ]);
+        
+        return redirect()->route('admin.allsubcategory')->with('message','Đã cập nhật trạng thái danh mục con!');
+    }
+    
+    public function DeactivateSubCategory(Request $request)
+    {
+        $id = $request->subcat_id;
+        SubCategory::where('id', $id)->update([
+            'status' => 'not active'
+        ]);
+        
+        return redirect()->route('admin.allsubcategory')->with('message','Đã cập nhật trạng thái danh mục con!');
+    }
+    
     public function CreateBrands()
     {
         return view('admin.createbrands');
     }
-
+    
     public function AllBrands()
     {
         return view('admin.allbrands');
