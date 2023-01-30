@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
@@ -171,9 +172,72 @@ class DashboardController extends Controller
     {
         return view('admin.createbrands');
     }
+
+    public function StoreBrand(Request $request)
+    {
+        $request->validate([
+            'brand_name' => 'required|unique:brands',
+        ]);
+
+        Brand::insert([
+            'brand_name' => $request->brand_name,
+            'slug' => strtolower(str_replace(' ','-',$request->category_name))
+        ]);
+
+        return redirect()->route('admin.allbrands')->with('message','Thêm thương hiệu sản phẩm thành công!');
+    }
+
+    public function EditBrand($id)
+    {
+        $brand_info = Brand::findOrFail($id);
+        return view('admin.editbrand', compact('brand_info'));
+    }
+
+    public function UpdateBrand(Request $request)
+    {
+        $request->validate([
+            'brand_name' => 'required|unique:brands',
+        ]);
+
+        $id = $request->brand_id;
+
+        Brand::where('id', $id)->update([
+            'brand_name' => $request->brand_name,
+            'slug' => strtolower(str_replace(' ','-',$request->brand_name))
+        ]);
+
+        return redirect()->route('admin.allbrands')->with('message','Cập nhật thương hiệu sản phẩm thành công!');
+    }
+
+    public function DeleteBrand($id)
+    {
+        Brand::findOrFail($id)->delete();
+        return redirect()->route('admin.allbrands')->with('message','Xoá thương hiệu sản phẩm thành công!');
+    }
+
+    public function ActivateBrand(Request $request)
+    {
+        $id = $request->brand_id;
+        Brand::where('id', $id)->update([
+            'status' => 'active'
+        ]);
+        
+        return redirect()->route('admin.allbrands')->with('message','Đã cập nhật trạng thái thương hiệu!');
+    }
+    
+    public function DeactivateBrand(Request $request)
+    {
+        $id = $request->brand_id;
+        Brand::where('id', $id)->update([
+            'status' => 'not active'
+        ]);
+        
+        return redirect()->route('admin.allbrands')->with('message','Đã cập nhật trạng thái thương hiệu!');
+    }
     
     public function AllBrands()
     {
-        return view('admin.allbrands');
+        $brands = Brand::all();
+        return view('admin.allbrands', compact('brands'));
     }
 }

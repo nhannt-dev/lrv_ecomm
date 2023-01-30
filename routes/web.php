@@ -50,7 +50,13 @@ Route::middleware('auth', 'role:admin')->group(function () {
         Route::get('/admin/delete-sub-category/{id}', 'DeleteSubCategory')->name('admin.deletesubcategory');
         Route::post('/admin/activate-subcategory', 'ActivateSubCategory')->name('admin.activatesubcategory');
         Route::post('/admin/deactivate-subcategory', 'DeactivateSubCategory')->name('admin.deactivatesubcategory');
-        Route::get('/admin/create-brands', 'CreateBrands')->name('admin.createbrands');
+        Route::get('/admin/create-brand', 'CreateBrands')->name('admin.createbrands');
+        Route::post('/admin/store-brand', 'StoreBrand')->name('admin.storebrand');
+        Route::get('/admin/edit-brand/{id}', 'EditBrand')->name('admin.editbrand');
+        Route::post('/admin/update-brand', 'UpdateBrand')->name('admin.updatebrand');
+        Route::get('/admin/delete-brand/{id}', 'DeleteBrand')->name('admin.deletebrand');
+        Route::post('/admin/activate-brand', 'ActivateBrand')->name('admin.activatebrand');
+        Route::post('/admin/deactivate-brand', 'DeactivateBrand')->name('admin.deactivatebrand');
         Route::get('/admin/all-brands', 'AllBrands')->name('admin.allbrands');
     });
     Route::controller(ProductController::class)->group(function () {
