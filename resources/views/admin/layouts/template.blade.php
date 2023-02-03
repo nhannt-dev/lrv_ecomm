@@ -15,6 +15,7 @@
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="{{ asset('dashboard_asset/assets/css/custom.css') }}">
   <link rel='shortcut icon' type='image/x-icon' href='{{ asset('dashboard_asset/assets/img/favicon.ico') }}' />
+  @livewireStyles
 </head>
 
 <body>
@@ -235,6 +236,7 @@
   <script src="{{ asset('dashboard_asset/assets/js/scripts.js') }}"></script>
   <!-- Custom JS File -->
   <script src="{{ asset('dashboard_asset/assets/js/custom.js') }}"></script>
+  @livewireScripts
 </body>
 
 
